@@ -1,0 +1,162 @@
+import { Day } from './models';
+
+/**
+ * ─────────────────────────────────────────────────────────────
+ *  TU RUTINA. Este es el archivo que puedes tocar a mano.
+ *  Cambia nombres, series, rangos de reps o descansos y recarga.
+ *  Si ya has editado la rutina desde la app, esos cambios mandan:
+ *  usa Plan → Editor → "Restaurar rutina original" para volver aquí.
+ *
+ *  top   = rango de reps del top set
+ *  back  = rango de reps de las series de apoyo
+ *  rest  = descanso en segundos
+ *  c     = cómo ejecutarlo
+ *  w     = por qué está en la rutina
+ * ─────────────────────────────────────────────────────────────
+ */
+export const DEFAULT_ROUTINE: Day[] = [
+  {
+    id: 'pushA', name: 'Push A', sub: 'Pecho · Hombro · Tríceps', dow: 1,
+    extra: 'Zona 2 · 25 min al terminar',
+    ex: [
+      { id: 'pinc_mc', n: 'Press inclinado con mancuernas', sets: 3, top: [7, 9], back: [8, 10], rest: 180,
+        c: 'Banco a 30–35°. Excéntrica de 2 s, pausa breve abajo, subida explosiva. Top set a RIR 0–1.',
+        w: 'Abre la sesión porque es tu ejercicio más productivo de pecho y el que más carga admite.' },
+      { id: 'pplano_mq', n: 'Press plano en máquina', sets: 3, top: [8, 10], back: [8, 10], rest: 120,
+        c: 'Escápulas retraídas y fijas al respaldo. RIR 1, última al fallo.',
+        w: 'Máquina en segundo lugar: acumula volumen sin gastar estabilizadores ya fatigados.' },
+      { id: 'cruces', n: 'Cruces en polea de abajo hacia arriba', sets: 2, top: [12, 15], back: [12, 15], rest: 90,
+        c: 'Estiramiento máximo abajo. Al fallo.',
+        w: 'Sustituye a tus aperturas de pectoral bajo: vector invertido, tensión donde el pectoral está estirado.' },
+      { id: 'pmil_mq', n: 'Press militar en máquina', sets: 3, top: [8, 10], back: [8, 10], rest: 120,
+        c: 'No bloquees del todo arriba. RIR 1–2.',
+        w: 'Hoy detrás del pecho porque hoy el pecho es la prioridad; el jueves abre él la sesión.' },
+      { id: 'lat_mc', n: 'Elevaciones laterales con mancuerna', sets: 3, top: [10, 15], back: [10, 15], rest: 75,
+        c: 'Codo algo flexionado, sin impulso de cadera. Última al fallo.',
+        w: 'Rango subido: a pocas repeticiones el trapecio resuelve el movimiento por ti.' },
+      { id: 'tri_polea', n: 'Extensión de tríceps en polea doble', sets: 3, top: [10, 12], back: [10, 12], rest: 90,
+        c: 'Codos pegados al cuerpo, extensión completa. RIR 0–1.',
+        w: 'El tríceps ya lleva 6 series indirectas de presses: aquí basta volumen de calidad.' },
+      { id: 'katana', n: 'Extensión katana unilateral', sets: 2, top: [12, 15], back: [12, 15], rest: 60,
+        c: 'Brazo por encima de la cabeza. Al fallo.',
+        w: 'Único ejercicio que estira la cabeza larga del tríceps.' },
+      { id: 'core_a', n: 'Rueda abdominal o crunch en polea', sets: 2, top: [10, 15], back: [10, 15], rest: 60,
+        c: 'Lumbar neutra, flexión de columna controlada. RIR 1.',
+        w: 'Aquí y no el miércoles: el día de pierna ya va lleno.' },
+    ],
+  },
+  {
+    id: 'pullA', name: 'Pull A', sub: 'Espalda gruesa · Bíceps', dow: 2, extra: 'Movilidad 8 min',
+    ex: [
+      { id: 'jalon_neutro', n: 'Jalón al pecho agarre neutro', sets: 3, top: [7, 9], back: [8, 10], rest: 180,
+        c: 'Pecho al frente, codos hacia el bolsillo. Sin balanceo.',
+        w: 'Tu ejercicio y tu orden. El vertical primero: más rango, más carga, agarre fresco.' },
+      { id: 'remo_t', n: 'Remo en T', sets: 3, top: [8, 10], back: [8, 10], rest: 150,
+        c: 'Torso a 30–45°, pausa de 1 s arriba. Sin tirones lumbares.',
+        w: 'El horizontal pesado necesita la lumbar fresca: por eso va segundo y no cuarto.' },
+      { id: 'remo_cerr', n: 'Remo agarre cerrado en máquina', sets: 3, top: [10, 12], back: [10, 12], rest: 120,
+        c: 'Estira del todo al final de cada repetición. Última al fallo.',
+        w: 'Volumen de espalda sin coste lumbar adicional.' },
+      { id: 'pullover', n: 'Pullover en polea alta', sets: 2, top: [12, 15], back: [12, 15], rest: 90,
+        c: 'Brazos casi rectos: el movimiento ocurre en el hombro, no en el codo.',
+        w: 'Dorsal sin bíceps implicado: el bíceps deja de limitar tu espalda.' },
+      { id: 'rear_delt', n: 'Rear delt en máquina de aperturas', sets: 3, top: [12, 15], back: [12, 15], rest: 60,
+        c: 'Baja el peso hasta hacer 15 sin meter trapecio. Al fallo.',
+        w: 'Músculo pequeño con palanca mala: a rangos altos no puedes compensar con la espalda.' },
+      { id: 'curl_pred', n: 'Curl predicador en máquina', sets: 3, top: [8, 10], back: [8, 10], rest: 90,
+        c: 'Excéntrica de 3 s. RIR 0–1.',
+        w: 'Bíceps con el hombro bloqueado: no puedes hacer trampa.' },
+      { id: 'curl_mart', n: 'Curl martillo con mancuerna', sets: 2, top: [10, 12], back: [10, 12], rest: 75,
+        c: 'Estricto, espalda contra la pared si hace falta. Al fallo.',
+        w: 'Braquial y braquiorradial: grosor del brazo visto de perfil.' },
+      { id: 'gemelo_pie', n: 'Gemelo de pie (o en prensa, una pierna)', sets: 3, top: [10, 12], back: [10, 12], rest: 75,
+        c: '2 s de pausa abajo en estiramiento, 1 s arriba. Sin rebote.',
+        w: 'Fuera del día de pierna a propósito: gana frecuencia 2 sin alargarte el miércoles.' },
+    ],
+  },
+  {
+    id: 'pierna', name: 'Pierna', sub: 'Tren inferior completo', dow: 3, extra: 'Sin cardio hoy · come bien antes',
+    ex: [
+      { id: 'prensa', n: 'Prensa inclinada 45°', sets: 4, top: [7, 9], back: [10, 12], rest: 180,
+        c: 'Pies a media altura. Rango completo con pausa abajo, como ya haces. Comprueba que los topes te dejan bajar del todo. RIR 1.',
+        w: 'Tu principal y la que abre. 4 series en vez de 3: con frecuencia 1 esta sesión carga con la semana entera.' },
+      { id: 'rdl', n: 'Peso muerto rumano', sets: 3, top: [8, 10], back: [8, 10], rest: 150,
+        c: 'Cadera atrás, espalda plana, barra pegada al muslo. RIR 2–3 SIEMPRE, nunca al fallo. Empieza en 50–60 kg.',
+        w: 'El añadido no negociable: era el único patrón de extensión de cadera que faltaba. Va segundo porque es técnico.' },
+      { id: 'bulgara', n: 'Sentadilla búlgara con mancuernas', sets: 3, top: [8, 10], back: [8, 10], rest: 120,
+        c: '12–14 kg por mano para empezar. Torso algo inclinado. Reps por pierna.',
+        w: 'Cuádriceps y glúteo en estiramiento, y destapa asimetrías que la prensa esconde.' },
+      { id: 'ext_cuad', n: 'Extensión de cuádriceps', sets: 3, top: [10, 12], back: [10, 12], rest: 90,
+        c: 'Pausa de 1 s arriba. Última al fallo + 3–4 parciales.',
+        w: 'Único ejercicio que trabaja el recto femoral con la cadera extendida.' },
+      { id: 'fem_tumb', n: 'Femoral tumbado', sets: 3, top: [10, 12], back: [10, 12], rest: 90,
+        c: 'Excéntrica de 3 s. Al fallo en la última.',
+        w: 'Ahora complementa al rumano: flexión de rodilla frente a extensión de cadera.' },
+      { id: 'hip_thrust', n: 'Hip thrust (barra en banco o multipower)', sets: 3, top: [10, 12], back: [10, 12], rest: 120,
+        c: 'Barbilla al pecho, pausa de 1 s arriba. Sin hiperextender la lumbar.',
+        w: 'Glúteo acortado; el rumano lo cubre estirado. Tolera bien la fatiga previa, por eso va tarde.' },
+      { id: 'abduct', n: 'Abductores en máquina', sets: 2, top: [15, 20], back: [15, 20], rest: 60,
+        c: 'Torso inclinado hacia delante. Al fallo.',
+        w: 'Del primer puesto al último: era un estabilizador pre-fatigado justo antes de la prensa.' },
+    ],
+  },
+  {
+    id: 'pushB', name: 'Push B', sub: 'Hombro · Pecho superior', dow: 4, extra: 'Zona 2 · 30 min al terminar',
+    ex: [
+      { id: 'pmil_b', n: 'Press militar en máquina o mancuernas', sets: 3, top: [7, 9], back: [8, 10], rest: 150,
+        c: 'Recorrido completo sin bloquear. RIR 1.',
+        w: 'Hoy abre el hombro. Antes era el séptimo ejercicio del día: este cambio de orden es de los que más se notan.' },
+      { id: 'pinc_mq', n: 'Press inclinado en máquina', sets: 3, top: [8, 10], back: [8, 10], rest: 150,
+        c: 'RIR 1, última al fallo.',
+        w: 'Segunda dosis de pecho superior con un perfil de resistencia distinto al de la mancuerna.' },
+      { id: 'cruces_b', n: 'Cruces en polea a la altura del pecho', sets: 2, top: [12, 15], back: [12, 15], rest: 90,
+        c: 'Estiramiento atrás, pausa de 1 s. Al fallo.',
+        w: 'Pectoral sin tríceps: hoy el tríceps tiene que llegar entero al final.' },
+      { id: 'lat_polea', n: 'Elevación lateral en polea unilateral', sets: 3, top: [12, 15], back: [12, 15], rest: 60,
+        c: 'Un brazo cada vez, sin balancear el torso. Al fallo.',
+        w: 'La polea da tensión abajo, donde la mancuerna no da nada.' },
+      { id: 'lat_bomb', n: 'Elevación lateral de bombeo (mancuerna ligera)', sets: 2, top: [15, 20], back: [15, 20], rest: 45,
+        c: 'Al fallo + 5 parciales. 6–8 kg.',
+        w: 'El deltoide lateral es tu punto débil declarado y el que más se beneficia de volumen alto.' },
+      { id: 'fondos', n: 'Fondos en máquina o press francés', sets: 3, top: [10, 12], back: [10, 12], rest: 90,
+        c: 'RIR 1, recorrido completo.',
+        w: 'Tríceps con carga, hoy que no ha hecho de asistente en tres presses seguidos.' },
+      { id: 'tri_cuerda', n: 'Extensión de tríceps con cuerda', sets: 2, top: [12, 15], back: [12, 15], rest: 60,
+        c: 'Abre la cuerda al final. Al fallo.',
+        w: 'Cierre en contracción máxima, complementario al trabajo pesado anterior.' },
+    ],
+  },
+  {
+    id: 'pullB', name: 'Pull B', sub: 'Espalda ancha · Posterior · Bíceps', dow: 5, extra: 'Movilidad 8 min',
+    ex: [
+      { id: 'jalon_pron', n: 'Jalón al pecho agarre pronado ancho', sets: 3, top: [8, 10], back: [8, 10], rest: 150,
+        c: 'Codos abajo y afuera, sin echar el torso atrás.',
+        w: 'Agarre pronado abierto: sesga a la parte alta y externa del dorsal, la que da la V.' },
+      { id: 'remo_neutro', n: 'Remo en máquina agarre neutro', sets: 3, top: [10, 12], back: [10, 12], rest: 120,
+        c: 'Codos a 45°, aprieta escápulas 1 s.',
+        w: 'Remo apoyado a propósito: dos días después del rumano no toca volver a cargar lumbar.' },
+      { id: 'remo_alto', n: 'Remo alto en polea', sets: 2, top: [12, 15], back: [12, 15], rest: 75,
+        c: 'Codos por encima de las muñecas. RIR 1.',
+        w: 'Espalda alta: la zona que no tenías cubierta.' },
+      { id: 'face_pull', n: 'Face pull en polea', sets: 3, top: [15, 20], back: [15, 20], rest: 60,
+        c: 'Hacia la frente, codos altos. RIR 1.',
+        w: 'El seguro de tu hombro frente a 11 series semanales de press.' },
+      { id: 'curl_bay', n: 'Curl bayesian en polea', sets: 3, top: [10, 12], back: [10, 12], rest: 75,
+        c: 'Brazo detrás del cuerpo, sin perder el estiramiento. Al fallo.',
+        w: 'Lo contrario del predicador del martes: entre los dos cubres el bíceps estirado y acortado.' },
+      { id: 'encog', n: 'Encogimientos con mancuernas', sets: 2, top: [12, 15], back: [12, 15], rest: 60,
+        c: 'Pausa de 1 s arriba, sin rodar los hombros.',
+        w: 'Trapecio superior directo, que estaba a cero.' },
+      { id: 'gemelo_sent', n: 'Gemelo sentado (o en prensa, rodilla flexionada)', sets: 3, top: [12, 15], back: [12, 15], rest: 60,
+        c: 'Pausa abajo de 2 s. Al fallo.',
+        w: 'Rodilla flexionada para sesgar al sóleo; el de pie del martes va al gastrocnemio.' },
+      { id: 'core_b', n: 'Plancha o elevación de piernas', sets: 3, top: [10, 15], back: [10, 15], rest: 60,
+        c: 'Sin arquear la lumbar. RIR 1.',
+        w: 'Segunda dosis de core en el día más ligero de la semana.' },
+    ],
+  },
+];
+
+export const DAYNAMES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+export const MONTHS = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+  'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
